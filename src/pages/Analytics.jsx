@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-    getCourses,
-    getEnrollments,
-    getAssignments,
-    getPayments,
-    getReviews
-} from "../services/DashboardService";
+import { getDashboardStats } from "../services/DashboardService";
 
 import DashboardChart from "../components/DashboardChart";
 import DashboardPieChart from "../components/DashboardPieChart";
@@ -21,6 +15,9 @@ function Analytics() {
         enrollments: 0,
         assignments: 0,
         reviews: 0,
+        discussions: 0,
+        certificates: 0,
+        users: 0,
         revenue: 0
     });
 
@@ -32,35 +29,23 @@ function Analytics() {
 
         try {
 
-            const [
-                courses,
-                enrollments,
-                assignments,
-                payments,
-                reviews
-            ] = await Promise.all([
-                getCourses(),
-                getEnrollments(),
-                getAssignments(),
-                getPayments(),
-                getReviews()
-            ]);
+            const response = await getDashboardStats();
 
-            const revenue = payments.data.reduce(
-                (sum, payment) => sum + payment.amount,
-                0
-            );
+            const data = response.data;
 
             setStats({
-                courses: courses.data.length,
-                enrollments: enrollments.data.length,
-                assignments: assignments.data.length,
-                reviews: reviews.data.length,
-                revenue
+                users: data.totalUsers || 0,
+                courses: data.totalCourses || 0,
+                enrollments: data.totalEnrollments || 0,
+                assignments: data.totalAssignments || 0,
+                certificates: data.totalCertificates || 0,
+                reviews: data.totalReviews || 0,
+                discussions: data.totalDiscussions || 0,
+                revenue: 0
             });
 
         } catch (error) {
-            console.error(error);
+            console.error("Dashboard Error:", error);
         }
 
     };
@@ -78,8 +63,9 @@ function Analytics() {
                 <div className="col-lg-3 mb-4">
                     <div className="card bg-primary text-white shadow border-0">
                         <div className="card-body text-center">
-                            <h5>Courses</h5>
+                            <h5>📚 Courses</h5>
                             <h2>{stats.courses}</h2>
+                            <small>Total Courses</small>
                         </div>
                     </div>
                 </div>
@@ -87,8 +73,9 @@ function Analytics() {
                 <div className="col-lg-3 mb-4">
                     <div className="card bg-success text-white shadow border-0">
                         <div className="card-body text-center">
-                            <h5>Enrollments</h5>
+                            <h5>🎓 Enrollments</h5>
                             <h2>{stats.enrollments}</h2>
+                            <small>Total Enrollments</small>
                         </div>
                     </div>
                 </div>
@@ -96,8 +83,9 @@ function Analytics() {
                 <div className="col-lg-3 mb-4">
                     <div className="card bg-warning shadow border-0">
                         <div className="card-body text-center">
-                            <h5>Assignments</h5>
+                            <h5>📝 Assignments</h5>
                             <h2>{stats.assignments}</h2>
+                            <small>Assignments</small>
                         </div>
                     </div>
                 </div>
@@ -105,7 +93,48 @@ function Analytics() {
                 <div className="col-lg-3 mb-4">
                     <div className="card bg-danger text-white shadow border-0">
                         <div className="card-body text-center">
-                            <h5>Revenue</h5>
+                            <h5>⭐ Reviews</h5>
+                            <h2>{stats.reviews}</h2>
+                            <small>Course Reviews</small>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div className="row">
+
+                <div className="col-lg-3 mb-4">
+                    <div className="card bg-info text-white shadow border-0">
+                        <div className="card-body text-center">
+                            <h5>👨‍🎓 Users</h5>
+                            <h2>{stats.users}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="col-lg-3 mb-4">
+                    <div className="card bg-secondary text-white shadow border-0">
+                        <div className="card-body text-center">
+                            <h5>🏆 Certificates</h5>
+                            <h2>{stats.certificates}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="col-lg-3 mb-4">
+                    <div className="card bg-dark text-white shadow border-0">
+                        <div className="card-body text-center">
+                            <h5>💬 Discussions</h5>
+                            <h2>{stats.discussions}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="col-lg-3 mb-4">
+                    <div className="card bg-success text-white shadow border-0">
+                        <div className="card-body text-center">
+                            <h5>💰 Revenue</h5>
                             <h2>₹{stats.revenue}</h2>
                         </div>
                     </div>
@@ -116,11 +145,11 @@ function Analytics() {
             <div className="row">
 
                 <div className="col-lg-8">
-                    <DashboardChart stats={stats}/>
+                    <DashboardChart stats={stats} />
                 </div>
 
                 <div className="col-lg-4">
-                    <DashboardPieChart stats={stats}/>
+                    <DashboardPieChart stats={stats} />
                 </div>
 
             </div>
@@ -128,11 +157,11 @@ function Analytics() {
             <div className="row mt-4">
 
                 <div className="col-lg-8">
-                    <RevenueChart/>
+                    <RevenueChart />
                 </div>
 
                 <div className="col-lg-4">
-                    <QuickActions/>
+                    <QuickActions />
                 </div>
 
             </div>
@@ -140,11 +169,11 @@ function Analytics() {
             <div className="row mt-4">
 
                 <div className="col-lg-6">
-                    <TopCourses/>
+                    <TopCourses />
                 </div>
 
                 <div className="col-lg-6">
-                    <RecentPayments/>
+                    <RecentPayments />
                 </div>
 
             </div>
@@ -152,7 +181,6 @@ function Analytics() {
         </div>
 
     );
-
 }
 
 export default Analytics;

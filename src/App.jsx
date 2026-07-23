@@ -300,11 +300,11 @@ function App() {
             />
             
             <Route
-                path="/add-review"
+                path="/announcements"
                 element={
                     <ProtectedRoute>
                         <Layout>
-                            <AddReview />
+                            <Announcements />
                         </Layout>
                     </ProtectedRoute>
                 }

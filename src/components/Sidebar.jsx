@@ -168,13 +168,13 @@ function Sidebar() {
                 </h6>
 
                 <li className="nav-item">
-                    <NavLink to="/announcement" className={menuStyle}>
+                    <NavLink to="/announcements" className={menuStyle}>
                         📢 Announcements
                     </NavLink>
                 </li>
 
                 <li className="nav-item">
-                    <NavLink to="/notification" className={menuStyle}>
+                    <NavLink to="/notifications" className={menuStyle}>
                         🔔 Notifications
                     </NavLink>
                 </li>
