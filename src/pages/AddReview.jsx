@@ -7,7 +7,7 @@ function AddReview() {
     const navigate = useNavigate();
 
     const [courseId, setCourseId] = useState("");
-    const [userId, setUserId] = useState("");
+    const userId = localStorage.getItem("userId");
     const [rating, setRating] = useState("");
     const [review, setReview] = useState("");
 
@@ -48,16 +48,7 @@ function AddReview() {
                     />
                 </div>
 
-                <div className="mb-3">
-                    <label>User ID</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        value={userId}
-                        onChange={(e) => setUserId(e.target.value)}
-                        required
-                    />
-                </div>
+
 
                 <div className="mb-3">
                     <label>Rating (1-5)</label>
