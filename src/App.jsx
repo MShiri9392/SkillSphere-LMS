@@ -298,6 +298,16 @@ function App() {
                     </ProtectedRoute>
                 }
             />
+            <Route
+                path="/add-review"
+                element={
+                    <RoleProtectedRoute allowedRoles={["STUDENT"]}>
+                        <Layout>
+                            <AddReview />
+                        </Layout>
+                    </RoleProtectedRoute>
+                }
+            />
             
             <Route
                 path="/announcements"
