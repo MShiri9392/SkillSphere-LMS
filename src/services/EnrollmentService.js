@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:8082/api/enrollments";
+const API = "import.meta.env.VITE_API_URL";
 
 const authHeader = () => ({
     headers: {

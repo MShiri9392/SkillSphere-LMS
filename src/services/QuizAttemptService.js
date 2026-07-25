@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:8082/api/quiz-attempts";
+const API = import.meta.env.VITE_API_URL;
 
 export const submitQuiz = (attempt) => {
     return axios.post(API, attempt);

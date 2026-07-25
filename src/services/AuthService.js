@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8082/api/users";
+const API_URL = "import.meta.env.VITE_API_URL";
 
 export const forgotPassword = (email) => {
     return axios.post(`${BASE_URL}/forgot-password`, {

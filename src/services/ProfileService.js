@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8082/api/users";
+const BASE_URL = `${import.meta.env.VITE_API_URL}/users`;
 
 const config = () => ({
     headers: {
@@ -13,6 +13,7 @@ export const getProfile = (id) =>
 
 export const updateProfile = (id, user) =>
     axios.put(`${BASE_URL}/${id}`, user, config());
+
 export const changePassword = (id, data) =>
     axios.put(
         `${BASE_URL}/${id}/change-password`,

@@ -19,7 +19,7 @@ function Register() {
         e.preventDefault();
 
         try {
-            await axios.post("http://localhost:8082/api/users/register", user);
+            await axios.post("import.meta.env.VITE_API_URL", user);
             alert("Registration Successful");
         } catch (error) {
             alert("Registration Failed");
