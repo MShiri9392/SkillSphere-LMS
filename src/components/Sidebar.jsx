@@ -143,20 +143,22 @@ function Sidebar() {
                     </NavLink>
                 </li>
 
+                {/* Student Only */}
                 {role === "STUDENT" && (
-                    <>
-                        <li className="nav-item">
-                            <NavLink to="/wishlist" className={menuStyle}>
-                                ❤️ Wishlist
-                            </NavLink>
-                        </li>
+                    <li className="nav-item">
+                        <NavLink to="/wishlist" className={menuStyle}>
+                            ❤️ Wishlist
+                        </NavLink>
+                    </li>
+                )}
 
-                        <li className="nav-item">
-                            <NavLink to="/certificate" className={menuStyle}>
-                                🏆 Certificates
-                            </NavLink>
-                        </li>
-                    </>
+                {/* Admin + Student */}
+                {(role === "ADMIN" || role === "STUDENT") && (
+                    <li className="nav-item">
+                        <NavLink to="/certificate" className={menuStyle}>
+                            🏆 Certificates
+                        </NavLink>
+                    </li>
                 )}
 
                 {/* ================= COMMUNICATION ================= */}

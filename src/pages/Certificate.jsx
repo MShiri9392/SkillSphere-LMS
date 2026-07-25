@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
-import {
-    getAllCertificates,
-    generateCertificate,
-    deleteCertificate
-} from "../services/CertificateService";
+import { getCertificates } from "../services/CertificateService";
 
 function Certificate() {
 
     const [certificates, setCertificates] = useState([]);
-    const [enrollmentId, setEnrollmentId] = useState("");
 
     useEffect(() => {
         loadCertificates();
@@ -16,96 +11,24 @@ function Certificate() {
 
     const loadCertificates = async () => {
         try {
-            const response = await getAllCertificates();
-            console.log(response.data);
+            const response = await getCertificates();
+
+            console.log("Certificates:", response.data);
+
             setCertificates(response.data);
+
         } catch (error) {
             console.error(error);
             alert("Unable to load Certificates");
         }
     };
 
-    const handleGenerate = async () => {
-
-        if (!enrollmentId) {
-            alert("Please enter Enrollment ID");
-            return;
-        }
-
-        try {
-            await generateCertificate(enrollmentId);
-
-            alert("Certificate Generated Successfully");
-
-            setEnrollmentId("");
-
-            loadCertificates();
-
-        } catch (error) {
-            console.error(error);
-            alert("Unable to Generate Certificate");
-        }
-    };
-
-    const handleDelete = async (id) => {
-
-        if (!window.confirm("Are you sure you want to delete this certificate?"))
-            return;
-
-        try {
-
-            await deleteCertificate(id);
-
-            alert("Certificate Deleted Successfully");
-
-            loadCertificates();
-
-        } catch (error) {
-
-            console.error(error);
-            alert("Unable to Delete Certificate");
-
-        }
-    };
-
     return (
-
         <div className="container mt-4">
 
             <h2 className="text-center mb-4">
-                🎓 Certificates
+                🏆 Certificates
             </h2>
-
-            <div className="card shadow p-4 mb-4">
-
-                <div className="row">
-
-                    <div className="col-md-8">
-
-                        <input
-                            type="number"
-                            className="form-control"
-                            placeholder="Enter Enrollment ID"
-                            value={enrollmentId}
-                            onChange={(e) => setEnrollmentId(e.target.value)}
-                        />
-
-                    </div>
-
-                    <div className="col-md-4">
-
-                        <button
-                            className="btn btn-success w-100"
-                            onClick={handleGenerate}
-                        >
-                            Generate Certificate
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
 
             {certificates.length === 0 ? (
 
@@ -115,65 +38,66 @@ function Certificate() {
 
             ) : (
 
-                <div className="row">
+                <div className="table-responsive">
 
-                    {certificates.map((certificate) => (
+                    <table className="table table-bordered table-striped shadow">
 
-                        <div className="col-md-4 mb-4" key={certificate.id}>
+                        <thead className="table-dark">
 
-                            <div className="card shadow h-100">
+                        <tr>
+                            <th>ID</th>
+                            <th>Enrollment ID</th>
+                            <th>User ID</th>
+                            <th>Course ID</th>
+                            <th>Certificate Number</th>
+                            <th>Issued Date</th>
+                        </tr>
 
-                                <div className="card-body">
+                        </thead>
 
-                                    <h4 className="text-primary">
-                                        Certificate #{certificate.id}
-                                    </h4>
+                        <tbody>
 
-                                    <hr />
+                        {certificates.map((certificate) => (
 
-                                    <p>
-                                        <strong>Enrollment ID:</strong>{" "}
-                                        {certificate.enrollment?.id}
-                                    </p>
+                            <tr key={certificate.id}>
 
-                                    <p>
-                                        <strong>Certificate Number:</strong>
-                                        <br />
-                                        <small className="text-break">
-                                            {certificate.certificateNumber}
-                                        </small>
-                                    </p>
+                                <td>{certificate.id}</td>
 
-                                    <p>
-                                        <strong>Issue Date:</strong>{" "}
-                                        {certificate.issueDate}
-                                    </p>
+                                <td>
+                                    {certificate.enrollment?.id}
+                                </td>
 
-                                </div>
+                                <td>
+                                    {certificate.enrollment?.userId}
+                                </td>
 
-                                <div className="card-footer bg-white border-0">
+                                <td>
+                                    {certificate.enrollment?.courseId}
+                                </td>
 
-                                    <button
-                                        className="btn btn-danger w-100"
-                                        onClick={() => handleDelete(certificate.id)}
-                                    >
-                                        Delete Certificate
-                                    </button>
+                                <td>
+                                    <span className="badge bg-success">
+                                        {certificate.certificateNumber}
+                                    </span>
+                                </td>
 
-                                </div>
+                                <td>
+                                    {certificate.issuedDate}
+                                </td>
 
-                            </div>
+                            </tr>
 
-                        </div>
+                        ))}
 
-                    ))}
+                        </tbody>
+
+                    </table>
 
                 </div>
 
             )}
 
         </div>
-
     );
 }
 

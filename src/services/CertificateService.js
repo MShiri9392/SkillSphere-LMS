@@ -1,30 +1,24 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8082/api/certificates";
+const API = import.meta.env.VITE_API_URL;
 
-const getToken = () => localStorage.getItem("token");
-
-const axiosConfig = () => ({
+const authHeader = () => ({
     headers: {
-        Authorization: `Bearer ${getToken()}`
+        Authorization: `Bearer ${localStorage.getItem("token")}`
     }
 });
 
-export const getAllCertificates = () => {
-    return axios.get(API_URL, axiosConfig());
+export const getCertificates = () => {
+    return axios.get(
+        `${API}/certificates`,
+        authHeader()
+    );
 };
 
 export const generateCertificate = (enrollmentId) => {
     return axios.post(
-        `${API_URL}/generate/${enrollmentId}`,
+        `${API}/certificates/generate/${enrollmentId}`,
         {},
-        axiosConfig()
-    );
-};
-
-export const deleteCertificate = (id) => {
-    return axios.delete(
-        `${API_URL}/${id}`,
-        axiosConfig()
+        authHeader()
     );
 };

@@ -423,7 +423,7 @@ function App() {
             <Route
                 path="/certificate"
                 element={
-                    <RoleProtectedRoute allowedRoles={["STUDENT"]}>
+                    <RoleProtectedRoute allowedRoles={["ADMIN", "STUDENT"]}>
                         <Layout>
                             <Certificate />
                         </Layout>

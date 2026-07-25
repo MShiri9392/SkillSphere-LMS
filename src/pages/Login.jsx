@@ -19,7 +19,9 @@ function Login() {
                     password,
                 }
             );
+            console.log("LOGIN RESPONSE");
             console.log(response.data);
+            console.log("ROLE:", response.data.role);
 
             // Save JWT and user details
             localStorage.setItem("token", response.data.token);

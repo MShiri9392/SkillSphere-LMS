@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllProgress } from "../services/ProgressService";
+import { generateCertificate } from "../services/CertificateService";
 
 function Progress() {
 
@@ -20,6 +21,28 @@ function Progress() {
         } catch (error) {
             console.error(error);
             alert("Unable to load Progress");
+        }
+    };
+
+    const handleGenerateCertificate = async (enrollmentId) => {
+        try {
+
+            const response = await generateCertificate(enrollmentId);
+
+            alert(
+                "Certificate Generated Successfully!\n\nCertificate Number: " +
+                response.data.certificateNumber
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            if (error.response) {
+                alert(error.response.data.message);
+            } else {
+                alert("Unable to generate certificate");
+            }
         }
     };
 
@@ -62,7 +85,7 @@ function Progress() {
                                         {progress.percentage ?? 0}%
                                     </p>
 
-                                    <div className="progress">
+                                    <div className="progress mb-3">
 
                                         <div
                                             className="progress-bar bg-success"
@@ -78,6 +101,19 @@ function Progress() {
                                         </div>
 
                                     </div>
+
+                                    {(progress.percentage ?? 0) === 100 && (
+                                        <button
+                                            className="btn btn-success w-100"
+                                            onClick={() =>
+                                                handleGenerateCertificate(
+                                                    progress.enrollment.id
+                                                )
+                                            }
+                                        >
+                                            🎓 Generate Certificate
+                                        </button>
+                                    )}
 
                                 </div>
 
