@@ -1,22 +1,50 @@
 import axios from "axios";
 
-const BASE_URL = `${import.meta.env.VITE_API_URL}/users`;
+// Backend:
+// VITE_API_URL=https://skillsphere-ai-backend-1.onrender.com/api
+const API_URL = `${import.meta.env.VITE_API_URL}/users`;
 
-const config = () => ({
-    headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-    }
-});
+// ==============================
+// Authorization Header
+// ==============================
+const authHeader = () => {
+    const token = localStorage.getItem("token");
 
-export const getProfile = (id) =>
-    axios.get(`${BASE_URL}/${id}`, config());
+    return {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    };
+};
 
-export const updateProfile = (id, user) =>
-    axios.put(`${BASE_URL}/${id}`, user, config());
-
-export const changePassword = (id, data) =>
-    axios.put(
-        `${BASE_URL}/${id}/change-password`,
-        data,
-        config()
+// ==============================
+// Get User Profile
+// ==============================
+export const getProfile = (id) => {
+    return axios.get(
+        `${API_URL}/${id}`,
+        authHeader()
     );
+};
+
+// ==============================
+// Update User Profile
+// ==============================
+export const updateProfile = (id, user) => {
+    return axios.put(
+        `${API_URL}/${id}`,
+        user,
+        authHeader()
+    );
+};
+
+// ==============================
+// Change Password
+// ==============================
+export const changePassword = (id, data) => {
+    return axios.put(
+        `${API_URL}/${id}/change-password`,
+        data,
+        authHeader()
+    );
+};
