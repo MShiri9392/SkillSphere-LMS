@@ -4,6 +4,9 @@ import {
     getCourses,
     deleteCourse
 } from "../services/CourseService";
+import {
+    enrollCourse
+} from "../services/EnrollmentService";
 
 function Courses() {
 
@@ -12,6 +15,7 @@ function Courses() {
     const [loading, setLoading] = useState(true);
 
     const role = localStorage.getItem("role");
+    const userId = localStorage.getItem("userId");
 
     useEffect(() => {
         loadCourses();
@@ -55,6 +59,42 @@ function Courses() {
 
             alert("Unable to delete course.");
 
+        }
+    };
+    const handleEnroll = async (courseId) => {
+
+        if (!userId) {
+            alert("User ID not found. Please login again.");
+            return;
+        }
+
+        try {
+
+            const enrollment = {
+                user: {
+                    id: Number(userId)
+                },
+                course: {
+                    id: Number(courseId)
+                },
+                status: "ENROLLED"
+            };
+
+            console.log("Enrollment Data:", enrollment);
+
+            await enrollCourse(enrollment);
+
+            alert("Course Enrolled Successfully!");
+
+        } catch (error) {
+
+            console.error("Enrollment Error:", error);
+            console.error("Response:", error.response?.data);
+
+            alert(
+                error.response?.data?.message ||
+                "Unable to enroll in course."
+            );
         }
     };
 
@@ -271,6 +311,14 @@ function Courses() {
                                                 >
                                                     👁 View
                                                 </Link>
+                                                {role === "STUDENT" && (
+                                                    <button
+                                                        className="btn btn-success btn-sm me-2"
+                                                        onClick={() => handleEnroll(course.id)}
+                                                    >
+                                                        🎓 Enroll
+                                                    </button>
+                                                )}
 
                                                 {(role === "ADMIN" || role === "INSTRUCTOR") && (
                                                     <>

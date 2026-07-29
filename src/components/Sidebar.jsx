@@ -13,6 +13,10 @@ function Sidebar() {
     const logout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("role");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("email");
+        localStorage.removeItem("name");
+
         navigate("/");
     };
 
@@ -25,7 +29,7 @@ function Sidebar() {
                 overflowY: "auto"
             }}
         >
-            {/* Logo */}
+            {/* ================= LOGO ================= */}
 
             <div className="text-center p-3 border-bottom">
                 <h3>🎓 SkillSphere</h3>
@@ -37,7 +41,7 @@ function Sidebar() {
 
             <ul className="nav flex-column p-2">
 
-                {/* Dashboard */}
+                {/* ================= DASHBOARD ================= */}
 
                 <li className="nav-item">
                     <NavLink to="/dashboard" className={menuStyle}>
@@ -45,11 +49,12 @@ function Sidebar() {
                     </NavLink>
                 </li>
 
+
                 {/* ================= ADMIN ================= */}
 
                 {role === "ADMIN" && (
                     <>
-                        <hr className="text-secondary"/>
+                        <hr className="text-secondary" />
 
                         <h6 className="text-warning px-3">
                             Administration
@@ -75,11 +80,12 @@ function Sidebar() {
                     </>
                 )}
 
-                {/* ================= COURSES ================= */}
+
+                {/* ================= ADMIN COURSE MANAGEMENT ================= */}
 
                 {(role === "ADMIN" || role === "INSTRUCTOR") && (
                     <>
-                        <hr className="text-secondary"/>
+                        <hr className="text-secondary" />
 
                         <h6 className="text-warning px-3">
                             Course Management
@@ -105,9 +111,29 @@ function Sidebar() {
                     </>
                 )}
 
+
+                {/* ================= STUDENT COURSES ================= */}
+
+                {role === "STUDENT" && (
+                    <>
+                        <hr className="text-secondary" />
+
+                        <h6 className="text-warning px-3">
+                            Courses
+                        </h6>
+
+                        <li className="nav-item">
+                            <NavLink to="/courses" className={menuStyle}>
+                                📚 Browse Courses
+                            </NavLink>
+                        </li>
+                    </>
+                )}
+
+
                 {/* ================= LEARNING ================= */}
 
-                <hr className="text-secondary"/>
+                <hr className="text-secondary" />
 
                 <h6 className="text-warning px-3">
                     Learning
@@ -143,7 +169,9 @@ function Sidebar() {
                     </NavLink>
                 </li>
 
-                {/* Student Only */}
+
+                {/* ================= STUDENT ONLY ================= */}
+
                 {role === "STUDENT" && (
                     <li className="nav-item">
                         <NavLink to="/wishlist" className={menuStyle}>
@@ -152,7 +180,9 @@ function Sidebar() {
                     </li>
                 )}
 
-                {/* Admin + Student */}
+
+                {/* ================= CERTIFICATES ================= */}
+
                 {(role === "ADMIN" || role === "STUDENT") && (
                     <li className="nav-item">
                         <NavLink to="/certificate" className={menuStyle}>
@@ -161,9 +191,10 @@ function Sidebar() {
                     </li>
                 )}
 
+
                 {/* ================= COMMUNICATION ================= */}
 
-                <hr className="text-secondary"/>
+                <hr className="text-secondary" />
 
                 <h6 className="text-warning px-3">
                     Communication
@@ -193,9 +224,10 @@ function Sidebar() {
                     </NavLink>
                 </li>
 
+
                 {/* ================= ACCOUNT ================= */}
 
-                <hr className="text-secondary"/>
+                <hr className="text-secondary" />
 
                 <h6 className="text-warning px-3">
                     Account
@@ -208,7 +240,10 @@ function Sidebar() {
                 </li>
 
                 <li className="nav-item">
-                    <NavLink to="/change-password" className={menuStyle}>
+                    <NavLink
+                        to="/change-password"
+                        className={menuStyle}
+                    >
                         🔒 Change Password
                     </NavLink>
                 </li>
