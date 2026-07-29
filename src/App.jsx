@@ -116,11 +116,13 @@ function App() {
             <Route
                 path="/course/:id"
                 element={
-                   <Layout>
-                        <CourseDetails />
-                  </Layout>
-             }
-           />
+                    <ProtectedRoute>
+                        <Layout>
+                            <CourseDetails />
+                        </Layout>
+                    </ProtectedRoute>
+                }
+            />
             <Route
                 path="/add-course"
                 element={
@@ -211,17 +213,17 @@ function App() {
                    </RoleProtectedRoute>
                 }
             />
-
             <Route
                 path="/courses"
                 element={
-                    <RoleProtectedRoute allowedRoles={["ADMIN", "INSTRUCTOR"]}>
+                    <RoleProtectedRoute allowedRoles={["ADMIN", "INSTRUCTOR", "STUDENT"]}>
                         <Layout>
                             <Courses />
                         </Layout>
                     </RoleProtectedRoute>
                 }
             />
+
 
             {/* ========== ALL USERS ========== */}
 
